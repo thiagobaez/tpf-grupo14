@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPP - Propuestas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #222222;
+            font-size: 14px;
+        }
+
+        header {
+            background: #1a1a2e;
+            color: #ffffff;
+            padding: 20px 40px;
+        }
+        header h1 { font-size: 18px; font-weight: bold; }
+        header p { color: #aaaaaa; font-size: 12px; margin-top: 4px; }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: #f4f4f4;
+            border-bottom: 2px solid #cccccc;
+            padding: 0 40px;
+            overflow-x: auto;
+        }
+        .tab {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #555555;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            white-space: nowrap;
+        }
+        .tab.active {
+            color: #1a1a2e;
+            border-bottom-color: #1a1a2e;
+            font-weight: bold;
+            background: #ffffff;
+        }
+        .tab:hover:not(.active) { background: #ebebeb; }
+
+        /* Content */
+        .content { padding: 30px 40px; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Compare grid */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            border: 1px solid #cccccc;
+        }
+        .compare-card {
+            background: white;
+            padding: 20px;
+            border-right: 1px solid #cccccc;
+        }
+        .compare-card:last-child { border-right: none; }
+        .compare-card.empty { background: #fafafa; }
+        .compare-card h3 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a1a2e;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .compare-card .vision-label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #888888;
+            margin-bottom: 4px;
+        }
+        .compare-card .vision-text {
+            font-size: 12px;
+            color: #444444;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .compare-card.empty .vision-text { color: #bbbbbb; }
+
+        /* Mini context matrix */
+        .mini-matrix-label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #888888;
+            margin-bottom: 8px;
+        }
+        .mini-matrix {
+            display: grid;
+            grid-template-columns: 68px repeat(3, 1fr);
+            gap: 4px;
+            align-items: center;
+        }
+        .mini-col-header {
+            font-size: 10px;
+            color: #888888;
+            text-align: center;
+        }
+        .mini-row-label {
+            font-size: 11px;
+            color: #555555;
+        }
+        .mini-dot-cell { display: flex; justify-content: center; }
+
+        /* Dots */
+        .dot { border-radius: 50%; flex-shrink: 0; }
+        .dot.lg { width: 34px; height: 34px; }
+        .dot.sm { width: 16px; height: 16px; }
+        .dot.green  { background: #2ECC71; }
+        .dot.yellow { background: #F1C40F; }
+        .dot.red    { background: #E74C3C; }
+
+        /* Detail sections */
+        .proposal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        .proposal-desc {
+            font-size: 12px;
+            color: #888888;
+            margin-bottom: 24px;
+        }
+
+        .section {
+            border: 1px solid #cccccc;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: #1a1a2e;
+            padding: 8px 14px;
+            letter-spacing: 0.05em;
+        }
+        .section-body { padding: 16px 14px; }
+
+        .field { margin-bottom: 14px; }
+        .field:last-child { margin-bottom: 0; }
+        .field-label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #888888;
+            margin-bottom: 4px;
+        }
+        .field-value {
+            font-size: 13px;
+            color: #222222;
+            line-height: 1.6;
+        }
+
+        /* Bullet list */
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li {
+            font-size: 13px;
+            color: #222222;
+            line-height: 1.6;
+            padding: 3px 0 3px 16px;
+            position: relative;
+        }
+        .bullet-list li::before {
+            content: "·";
+            position: absolute;
+            left: 4px;
+            color: #888888;
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        /* Context table */
+        .context-wrap { overflow-x: auto; }
+        .context-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .context-table th {
+            background: #f4f4f4;
+            font-size: 12px;
+            font-weight: bold;
+            color: #444444;
+            padding: 10px 14px;
+            text-align: center;
+            border: 1px solid #cccccc;
+        }
+        .context-table th:first-child {
+            text-align: left;
+            width: 120px;
+        }
+        .context-table td {
+            padding: 16px 14px;
+            border: 1px solid #cccccc;
+            vertical-align: top;
+        }
+        .dim-label {
+            font-weight: bold;
+            font-size: 13px;
+            color: #1a1a2e;
+        }
+        .cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .cell-text {
+            font-size: 12px;
+            color: #333333;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Placeholder */
+        .placeholder {
+            text-align: center;
+            padding: 80px 40px;
+            color: #cccccc;
+            border: 1px dashed #cccccc;
+        }
+        .placeholder h3 { font-size: 18px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TPP - Propuestas</h1>
+    <p>Ingeniería Informática · Comparación de propuestas</p>
+</header>
+
+<div class="tabs">
+    <button class="tab active" onclick="showTab('comparar', this)">Comparar</button>
+    <button class="tab" onclick="showTab('p1', this)">ParkLink</button>
+    <button class="tab" onclick="showTab('p2', this)">Prompt Coaching</button>
+    <button class="tab" onclick="showTab('p3', this)">Consorcio360</button>
+    <button class="tab" onclick="showTab('p4', this)">FinLy</button>
+</div>
+
+<div class="content">
+
+    <!-- COMPARAR -->
+    <div id="panel-comparar" class="panel active">
+        <div class="compare-grid">
+
+            <div class="compare-card">
+                <h3>ParkLink</h3>
+                <div class="vision-label">Visión</div>
+                <div class="vision-text">Convertirse en la plataforma líder para la gestión y alquiler de cocheras y facilitar el estacionamiento en todas las grandes ciudades del mundo</div>
+                <div class="mini-matrix-label">Contexto</div>
+                <div class="mini-matrix">
+                    <div></div>
+                    <div class="mini-col-header">1 año</div>
+                    <div class="mini-col-header">2–5 años</div>
+                    <div class="mini-col-header">5+ años</div>
+
+                    <div class="mini-row-label">Legal</div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Tecnol.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Social</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Económ.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                </div>
+            </div>
+
+            <div class="compare-card">
+                <h3>Prompt Coaching</h3>
+                <div class="vision-label">Visión</div>
+                <div class="vision-text">Ser el estándar global en el ecosistema de aprendizaje para la comunicación con IA</div>
+                <div class="mini-matrix-label">Contexto</div>
+                <div class="mini-matrix">
+                    <div></div>
+                    <div class="mini-col-header">1 año</div>
+                    <div class="mini-col-header">2–5 años</div>
+                    <div class="mini-col-header">5+ años</div>
+
+                    <div class="mini-row-label">Legal</div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Tecnol.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm red"></div></div>
+
+                    <div class="mini-row-label">Social</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+
+                    <div class="mini-row-label">Económ.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm red"></div></div>
+                </div>
+            </div>
+
+            <div class="compare-card">
+                <h3>Consorcio360</h3>
+                <div class="vision-label">Visión</div>
+                <div class="vision-text">Convertirse en la plataforma líder en gestión de consorcios, impulsando un ecosistema transparente, eficiente y colaborativo</div>
+                <div class="mini-matrix-label">Contexto</div>
+                <div class="mini-matrix">
+                    <div></div>
+                    <div class="mini-col-header">1 año</div>
+                    <div class="mini-col-header">2–5 años</div>
+                    <div class="mini-col-header">5+ años</div>
+
+                    <div class="mini-row-label">Legal</div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Tecnol.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Social</div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Económ.</div>
+                    <div class="mini-dot-cell"><div class="dot sm red"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                </div>
+            </div>
+
+            <div class="compare-card">
+                <h3>FinLy</h3>
+                <div class="vision-label">Visión</div>
+                <div class="vision-text">Convertirse en la herramienta líder de gestión financiera automatizada para emprendedores, pequeños negocios y trabajadores de la economía informal</div>
+                <div class="mini-matrix-label">Contexto</div>
+                <div class="mini-matrix">
+                    <div></div>
+                    <div class="mini-col-header">1 año</div>
+                    <div class="mini-col-header">2–5 años</div>
+                    <div class="mini-col-header">5+ años</div>
+
+                    <div class="mini-row-label">Legal</div>
+                    <div class="mini-dot-cell"><div class="dot sm yellow"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Tecnol.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Social</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+
+                    <div class="mini-row-label">Económ.</div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                    <div class="mini-dot-cell"><div class="dot sm green"></div></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PARKLINK -->
+    <div id="panel-p1" class="panel">
+        <div class="proposal-title">ParkLink</div>
+        <div class="proposal-desc">Análisis de propuesta · 5C's</div>
+
+        <!-- Compañía -->
+        <div class="section">
+            <div class="section-title">Compañía</div>
+            <div class="section-body">
+                <div class="field">
+                    <div class="field-label">Descripción</div>
+                    <div class="field-value">Aplicación y web app para reservar, alquilar y gestionar espacios públicos o privados disponibles para estacionamiento por la ciudad. Se podrá reservar y tomar reservas con antelación indicando el tiempo y tendrá un mapa en tiempo real con la información actualizada de cada espacio que se encuentre en el sistema.</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Visión</div>
+                    <div class="field-value">Convertirse en la plataforma líder para la gestión y alquiler de cocheras y facilitar el estacionamiento en todas las grandes ciudades del mundo</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Misión</div>
+                    <div class="field-value">Conectando a personas que necesitan estacionamiento con quienes tienen cocheras disponibles, ofreciendo una solución simple, segura y eficiente mediante tecnología accesible. Optimizando el uso de espacios urbanos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section">
+            <div class="section-title">Clientes</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Conductores que buscan estacionar en una ciudad concurrida o buscan alquiler temporario por su zona</li>
+                    <li>Personas que tienen cocheras sin usar o espacios libres disponibles</li>
+                    <li>Comercios o dueños de playas de estacionamiento</li>
+                    <li>Empresas con flotas de vehículos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="section">
+            <div class="section-title">Colaboradores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Personas que usaron nuestro servicio antes (mouth to mouth)</li>
+                    <li>Inseguridad</li>
+                    <li>Espacios ocupados en la calle</li>
+                    <li>Administradores y personal de edificios</li>
+                    <li>Administradores de estacionamientos (podrían recomendar la aplicación para obtener descuentos)</li>
+                    <li>Mala gestión de sistema de estacionamiento medido</li>
+                    <li>Multas por estacionar en lugares indebidos</li>
+                    <li>Tráfico</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competidores -->
+        <div class="section">
+            <div class="section-title">Competidores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Estacionamiento libre en la calle o playas públicas</li>
+                    <li>Personas con espacio de cochera ocupados</li>
+                    <li>Sistema de estacionamiento medido</li>
+                    <li>Navegadores con información de tráfico</li>
+                    <li>Personas que tienen lugar donde estacionar</li>
+                    <li>Vida sana</li>
+                    <li>Metrobus</li>
+                    <li>Bicisenda</li>
+                    <li>Todo medio de transporte/movimiento que no implique usar el auto</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contexto -->
+        <div class="section">
+            <div class="section-title">Contexto</div>
+            <div class="section-body" style="padding: 0;">
+                <div class="context-wrap">
+                    <table class="context-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>1 año</th>
+                                <th>2 a 5 años</th>
+                                <th>5+ años</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="dim-label">Legal</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Existen consideraciones legales para casos específicos de estacionamientos de departamentos de edificios privados. Esto deberá manejarse y estudiarse con atención para concluir como avanzar en este caso. El resto de casos no tendrían complicaciones legales</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Luego de arreglar la consideración indicada, no existen impedimentos legales para la gestión y desarrollo del sistema propuesto</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Luego de arreglar la consideración indicada, no existen impedimentos legales para la gestión y desarrollo del sistema propuesto</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Tecnológico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">No existe ningún impedimento o limitación tecnológica para llevar a cabo el MVP que tenemos en mente para este proyecto</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Para una ampliación del sistema sería interesante entrar con sistemas de detección en tiempo real de espacios libres ya se con el uso de inteligencia artificial o IoT. Esto requeriría un acceso a recursos nuevos pero no implicaría una complicación crítica</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Luego de las actualizaciones pensadas, no se encontraron mayores complicaciones tecnológicas para el desarrollo del sistema propuesto</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Social / Cultural</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La gente está acostumbrada a los sistemas de mapeo y reserva (como uber). La aplicación del sistema en grandes ciudades con mucho tráfico es muy sencilla a a nivel social</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Económico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">No se visualizan complicaciones económicas en un corto, medio o largo plazo ya que no existe la implementación de un sistema económicamente pesado</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PROMPT COACHING -->
+    <div id="panel-p2" class="panel">
+        <div class="proposal-title">Prompt Coaching</div>
+        <div class="proposal-desc">Análisis de propuesta · 5C's</div>
+
+        <!-- Compañía -->
+        <div class="section">
+            <div class="section-title">Compañía</div>
+            <div class="section-body">
+                <div class="field">
+                    <div class="field-label">Descripción</div>
+                    <div class="field-value">Middleware que analiza la interacción entre un usuario y un agente de inteligencia artificial, y plantea mejoras para que el usuario pueda identificar cuáles son sus puntos débiles y indicando que puede mejorar para reducir el consumo de tokens, y obtener mejores resultados</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Visión</div>
+                    <div class="field-value">Ser el estándar global en el ecosistema de aprendizaje para la comunicación con IA</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Misión</div>
+                    <div class="field-value">Optimizando el desempeño de los usuarios mediante una plataforma de análisis que identifique los puntos débiles en la comunicación humano-IA, y brinde las herramientas necesarias para que puedan obtener resultados de alto nivel técnico, reduciendo al máximo el consumo de recursos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section">
+            <div class="section-title">Clientes</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Industria de Software: compañías de software de alto rendimiento con flujos de trabajo basados en desarrollo asistido por IA (e.g. Mercado Libre, Accenture, Shopify, etc)</li>
+                    <li>Industria Legal: estudios jurídicos que gestionan altos volúmenes de información mediante flujos de trabajo asistidos por IA</li>
+                    <li>Industria de Marketing y Comunicación: agencias y equipos de diseño enfocados en producción másiva de activos mediante flujos de trabajo creativos asistidos por IA</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="section">
+            <div class="section-title">Colaboradores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Plataformas o interfaces donde integrar el middleware (e.g. VS Code, Copilot, Cursor, Claude)</li>
+                    <li>Proveedores de modelos de IA (e.g. OpenAI, Anthropic)</li>
+                    <li>Procesadores de pago (e.g. MercadoPago)</li>
+                    <li>Canales de distribución y marketplaces para publicitar el producto</li>
+                    <li>Situación económica (queremos ahorrar en costo)</li>
+                    <li>Inexperiencia</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competidores -->
+        <div class="section">
+            <div class="section-title">Competidores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Extensiones o herramientas que ayudan a mejorar prompts</li>
+                    <li>Generadores de prompts</li>
+                    <li>Chats de IA donde el usuario puede pedir "ayúdame a mejorar este prompt, y explicame cuales son sus puntos fuertes y cuales son sus puntos débiles"</li>
+                    <li>Cursos de Prompt Engineering</li>
+                    <li>Funciones nativas de las plataformas que reducen la necesidad de un optimizador externo (e.g. contexto de cada chat)</li>
+                    <li>Situación económica (queremos ahorrar en costo)</li>
+                    <li>Personas que no utilizan la IA</li>
+                    <li>Evolución de los modelos de IA</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contexto -->
+        <div class="section">
+            <div class="section-title">Contexto</div>
+            <div class="section-body" style="padding: 0;">
+                <div class="context-wrap">
+                    <table class="context-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>1 año</th>
+                                <th>2 a 5 años</th>
+                                <th>5+ años</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="dim-label">Legal</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Las regulaciones en torno a la IA empiezan a crecer, estableciendo limitaciones sobre su uso, almacenamiento y procesamiento de datos. No hay certeza sobre quien es propietario del output generado por una IA</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Marcos regulatorios más estrictos. Regulaciones sobre retención y procesamiento de datos de conversaciones con IA. Auditorías de IA en industrias reguladas o de alto impacto.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Es obligatorio tener trazabilidad en el manejo de la IA en sectores críticos</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Tecnológico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Los modelos de IA siguen mejorando la interpretación de las intenciones del usuario. Se amplía el ecosistema de herramientas estilo Copilot, Cursor, Claude, brindando más posibilidades de integración.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Los agentes empiezan a generar sus propios prompts, reduciendo la intervención directa del usuario. Mayor especialización en IA en la industria.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg red"></div>
+                                        <div class="cell-text">Los modelos aprenden del usuario de forma directa, y adaptan su interpretación sin necesidad de prompts 100% objetivos. Los agentes de IA empiezan a analizar la intención del usuario de forma proactiva, reduciendo la responsabilidad de formular un prompt preciso.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Social</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La IA se adopta de forma masiva en entornos laborales. La mayoría de los usuarios continúa aprendiendo como comunicarse con un agente. Crece la percepción de que la calidad del prompt impacta en la calidad del resultado.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La IA se normaliza como una herramienta de trabajo, y las empresas comienzan a considerarla un must en sus requisitos. Las empresas comienzan a capacitar activamente a sus empleados en el uso de IA.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Comunicarse con la IA se vuelve una habilidad comparable como saber buscar en Google.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Económico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">El costo de tokens es alto, y sigue creciendo en empresas a gran escala. Las empresas comienzan a medir el retorno de sus inversiones en IA.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La competencia entre proveedores de modelos puede reducir el costo por token.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg red"></div>
+                                        <div class="cell-text">El uso de IA se democratiza, y el costo por token deja de ser una preocupación relevante.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CONSORCIO360 -->
+    <div id="panel-p3" class="panel">
+        <div class="proposal-title">Consorcio360</div>
+        <div class="proposal-desc">Análisis de propuesta · 5C's</div>
+
+        <!-- Compañía -->
+        <div class="section">
+            <div class="section-title">Compañía</div>
+            <div class="section-body">
+                <div class="field">
+                    <div class="field-label">Descripción</div>
+                    <div class="field-value">Plataforma digital SaaS (Software as a Service) orientada a la gestión de consorcios. Su objetivo es modernizar la administración tradicional mediante la digitalización de procesos y la incorporación de herramientas de análisis inteligente. Permite centralizar la información del consorcio, gestionar expensas, visualizar ingresos y egresos, y mejorar la comunicación entre propietarios, inquilinos y administradores. Además, integra un sistema de inteligencia artificial que analiza los gastos para detectar posibles sobrecostos y optimizar la toma de decisiones.<br><br>Como diferencial, Consorcio360 incorpora un marketplace de servicios donde los consorcios contratar servicios, incluyendo así la posibilidad de sumar a diferentes profesionales a un precio justo.</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Visión</div>
+                    <div class="field-value">Convertirse en la plataforma líder en gestión de consorcios, impulsando un ecosistema transparente, eficiente y colaborativo, donde la información clara y el análisis inteligente permitan tomar mejores decisiones y reducir costos en la vida en comunidad.</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Misión</div>
+                    <div class="field-value">Desarrollando una plataforma digital integral que simplifique la administración de consorcios mediante herramientas de gestión, análisis de gastos con inteligencia artificial y un marketplace de servicios, brindando transparencia, control y eficiencia a propietarios, administradores y proveedores.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section">
+            <div class="section-title">Clientes</div>
+            <div class="section-body">
+                <div class="field-value">Los principales clientes son los administradores de consorcios y los prestadores de servicios, quienes generan ingresos a través de suscripciones y comisiones.</div>
+            </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="section">
+            <div class="section-title">Colaboradores</div>
+            <div class="section-body">
+                <div class="field-value">Los principales colaboradores son: los prestadores de servicios, las integraciones con plataformas de pago y servicios financieros para gestionar expensas, así como proveedores tecnológicos (hosting, infraestructura, IA) que soportan el sistema.</div>
+            </div>
+        </div>
+
+        <!-- Competidores -->
+        <div class="section">
+            <div class="section-title">Competidores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Plataformas de gestión de consorcios ya existentes, como ConsorcioAbierto, Octopus Proptech y Simplestate, el uso de planillas de Excel, los grupos de WhatsApp y el intercambio informal de información entre conocidos, publicaciones en diferentes redes sociales ofreciendo servicios, difusión por publicidad en radios, diarios.</li>
+                    <li>Tegu: Publicás lo que necesitás y profesionales te mandan presupuestos con precio y disponibilidad.</li>
+                    <li>ServiYA: Encontrás electricistas, plomeros, etc. cerca tuyo con reseñas y contacto directo.</li>
+                    <li>Reddo: Profesionales verificados + chat directo + coordinación</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contexto -->
+        <div class="section">
+            <div class="section-title">Contexto</div>
+            <div class="section-body" style="padding: 0;">
+                <div class="context-wrap">
+                    <table class="context-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>1 año</th>
+                                <th>2 a 5 años</th>
+                                <th>5+ años</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="dim-label">Legal</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Hay riesgos legales si no se manejan bien los datos: propietarios, pagos, proveedores, datos sensibles de los consorcios. Se debe establecer términos y condiciones claros.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">El sistema ya está ajustado, hay políticas de privacidad, procesos claros de uso de datos.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Sistema ya consolidado.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Tecnológico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">No hay barrera, ya existen sistemas de pago, IA para análisis, apps web y mobile.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La tecnología mejora (mejor IA, automatización).</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La tecnología deja de ser ventaja competitiva, lo importante pasa a ser la base de datos y usuarios.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Social</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Gran problema: los consorcios son conservadores, lentos para decidir, desconfiados con lo nuevo. Puede haber resistencias de propietarios y administradores tradicionales.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">La gente se empieza a acostumbrar al uso de IA en los servicios, más digitalización, nuevas generaciones tomarán las decisiones, el crecimiento de la app en los demás consorcios también influirá para bien.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Usar una app para el consorcio va a ser muy normal, se dejará de lado los sistemas conservadores y tradicionales. Desaparece la resistencia.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Económico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg red"></div>
+                                        <div class="cell-text">La situación económica afecta muchísimo, los consorcios están desesperados por bajar los costos, no se puede cobrar caro al inicio.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Lo económico importa menos, ya no es solo "necesito ahorrar" si no "que plataforma me conviene, quien es mejor"</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Una vez el producto este consolidado en el mercado, se usa igual.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FINLY -->
+    <div id="panel-p4" class="panel">
+        <div class="proposal-title">FinLy</div>
+        <div class="proposal-desc">Análisis de propuesta · 5C's</div>
+
+        <!-- Compañía -->
+        <div class="section">
+            <div class="section-title">Compañía</div>
+            <div class="section-body">
+                <div class="field">
+                    <div class="field-label">Descripción</div>
+                    <div class="field-value">Aplicación y chatbot (integrable con WhatsApp, Telegram o web app) que permite a los usuarios registrar pedidos, gastos, ingresos y stock mediante audios o mensajes de texto. El sistema procesa esta información automáticamente, la estructura en una base de datos organizada y permite consultar métricas financieras como ganancias, costos, flujo de caja y estado de inventario en tiempo real.</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Visión</div>
+                    <div class="field-value">Convertirse en la herramienta líder de gestión financiera automatizada para emprendedores, pequeños negocios y trabajadores de la economía informal, simplificando la administración mediante interfaces conversacionales.</div>
+                </div>
+                <div class="field">
+                    <div class="field-label">Misión</div>
+                    <div class="field-value">Facilitando el control financiero y operativo de negocios mediante inteligencia artificial, permitiendo registrar información de manera rápida y natural (voz o texto), transformándola en datos claros, accesibles y útiles para la toma de decisiones.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="section">
+            <div class="section-title">Clientes</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Emprendedores y pequeños negocios (ventas online, kioscos, locales comerciales).</li>
+                    <li>Freelancers que manejan ingresos y gastos variables.</li>
+                    <li>Personas que venden por redes sociales (Instagram, WhatsApp).</li>
+                    <li>Negocios sin sistemas de gestión formales.</li>
+                    <li>PyMEs que buscan simplificar su administración diaria.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="section">
+            <div class="section-title">Colaboradores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Crecimiento del boca a boca como canal principal.</li>
+                    <li>Alta presencia de economía en negro.</li>
+                    <li>Precarización digital con herramientas poco integradas.</li>
+                    <li>Expansión de emprendedores independientes.</li>
+                    <li>Necesidad de control financiero simple y en tiempo real.</li>
+                    <li>Alta competencia y cambios regulatorios constantes.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competidores -->
+        <div class="section">
+            <div class="section-title">Competidores</div>
+            <div class="section-body">
+                <ul class="bullet-list">
+                    <li>Hojas de cálculo (Excel, Google Sheets).</li>
+                    <li>Aplicaciones de gestión financiera tradicionales.</li>
+                    <li>Software ERP básico.</li>
+                    <li>Apps de control de gastos personales.</li>
+                    <li>Anotaciones manuales (cuadernos).</li>
+                    <li>Herramientas contables complejas (que suelen ser más difíciles de usar).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contexto -->
+        <div class="section">
+            <div class="section-title">Contexto</div>
+            <div class="section-body" style="padding: 0;">
+                <div class="context-wrap">
+                    <table class="context-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>1 año</th>
+                                <th>2 a 5 años</th>
+                                <th>5+ años</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="dim-label">Legal</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg yellow"></div>
+                                        <div class="cell-text">Manejo de datos sensibles financieros requiere cumplimiento de normativas de privacidad y protección de datos.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Con regulaciones claras y cumplimiento, no debería haber impedimentos.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Estándares consolidados de protección de datos.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Tecnológico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Tecnologías de IA, speech-to-text y procesamiento de lenguaje ya existen y son accesibles.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Mejoras en IA permitirán mayor precisión y automatización.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Integración con múltiples sistemas y automatización avanzada.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Social / Cultural</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Creciente adopción de asistentes virtuales y envío de audios.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Mayor confianza en automatización de tareas administrativas.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Uso natural de interfaces conversacionales para gestión.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dim-label">Económico</td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Bajo costo inicial de desarrollo (MVP viable con APIs existentes).</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Escalabilidad con modelo SaaS.</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="cell">
+                                        <div class="dot lg green"></div>
+                                        <div class="cell-text">Potencial de monetización alto con suscripciones y servicios premium.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function showTab(id, btn) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('panel-' + id).classList.add('active');
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
